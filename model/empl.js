@@ -2,10 +2,10 @@ const mongoose = require("mongoose");
 
 
 const empSchema = new mongoose.Schema({
-    _id:mongoose.Schema.Types.ObjectId,
-    __id:{
-        type:Object
-    },
+    // _id:mongoose.Schema.Types.ObjectId,
+    // __id:{
+    //     type:Object
+    // },
     name: {
         type:String
         // required: true,
@@ -21,6 +21,9 @@ const empSchema = new mongoose.Schema({
     },
     contact: {
         type: Number 
+    },
+    imagePath: {
+        type: String
     }
 
 })

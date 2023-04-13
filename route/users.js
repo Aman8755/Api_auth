@@ -9,6 +9,14 @@ const Employee = require('../model/empl');
 const router = express.Router();
 const mongoose=require('mongoose');
 const checkAuth = require('../middleware/check-auth');
+const cloudinary = require('cloudinary').v2;
+
+cloudinary.config({ 
+    cloud_name: 'dpgqzua3v', 
+    api_key: '942995271666978', 
+    api_secret: '2reo27LxNlv5B7TxbfYb-LUtDKI',
+    secure: true
+  });
 
 let users =[]
 
@@ -35,6 +43,11 @@ router.post('/',checkAuth,(req,res)=>{
     
     const user = req.body;
     // const uuidv4 = uuid.v4();
+
+    const file = req.files.photo;
+    cloudinary.uploader.upload(file.tempFilePath,(err,result)=>{
+        console.log(result);
+
     users.push({ ...user,id: uuidv4() });
     console.log(uuidv4);
 
@@ -48,7 +61,8 @@ router.post('/',checkAuth,(req,res)=>{
         jobtitle:user.jobtitle,
         salary:user.salary,
         address:user.address,
-        contact:user.contact
+        contact:user.contact,
+        imagePath:result.url
     })
 
     employee.save().then(result=>{
@@ -67,6 +81,7 @@ router.post('/',checkAuth,(req,res)=>{
     // console.log(req.body);
     res.send(`user with the name ${user.name}`);
 
+    });
 });
 
 
@@ -93,13 +108,23 @@ router.get('/:id',(req,res)=>{
     });
 });
 
-router.delete('/:id',(req,res,next)=>{
+router.delete('/',(req,res,next)=>{
     // const { id } =req.params;
     // users=users.filter((user)=> user.id != id );
     // res.send(`User with the id ${id} delet from database`)
+    const imageUrl = req.query.imageUrl;
+    const urlArray = imageUrl.split('/');
+    console.log(urlArray);
+    const image = urlArray[urlArray.length-1];
+    console.log(image);
+    const imageName=image.split('.')[0];
+    console.log(imageName);
 
-    Employee.findByIdAndRemove({_id:req.params.id})
+    Employee.findByIdAndRemove({_id:req.query.id})
     .then(result=>{
+        cloudinary.uploader.destroy(imageName,(error,result)=>{
+            console.log(error,result);
+        })
         res.status(200).json({
             message:'Employee data delete',
             result:result

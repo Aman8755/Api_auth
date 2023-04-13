@@ -8,6 +8,7 @@ const usersRoute = require('./route/users.js');//1
 
 
 const userSchema = require('./route/user');
+const fileUpload = require('express-fileupload');
 
 mongoose.connect('mongodb+srv://amanbrovitech:aman2001@brovitech.hbpmp9p.mongodb.net/Brovitech?retryWrites=true&w=majority');
 
@@ -18,6 +19,10 @@ mongoose.connection.on('error',err=>{
 mongoose.connection.on('connected',connected=>{
     console.log('connected server...');
 })
+
+app.use(fileUpload({
+    useTempFiles:true
+}));
 
 app.use(bodyParser.urlencoded({extended:false}));  ///for- bodyparser 
 app.use(bodyParser.json());
