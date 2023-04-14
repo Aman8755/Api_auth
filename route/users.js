@@ -88,7 +88,7 @@ router.post('/',checkAuth,(req,res)=>{
 
 
 // /users/2 => req.params { id:2 }
-router.get('/:id',(req,res)=>{
+router.get('/:id',checkAuth,(req,res)=>{
 // const { id }=req.params;
 // const foundUser = users.find((user) => user.id == id);
 //     res.send(foundUser);
@@ -108,7 +108,7 @@ router.get('/:id',(req,res)=>{
     });
 });
 
-router.delete('/',(req,res,next)=>{
+router.delete('/',checkAuth,(req,res,next)=>{
     // const { id } =req.params;
     // users=users.filter((user)=> user.id != id );
     // res.send(`User with the id ${id} delet from database`)
@@ -164,7 +164,7 @@ router.delete('/',(req,res,next)=>{
 //     res.send(`User with the id ${id} has been updated`);  
 // });
 
-router.patch('/:id',(req,res,next)=>{
+router.patch('/:id',checkAuth,(req,res,next)=>{
     console.log(req.params.id);
     const user = req.body;
 
