@@ -29,7 +29,7 @@ router.post('/signup',(req,res,next)=>{
                 password:hash,
                 phone:req.body.phone,
                 email:req.body.email,
-                userType:req.body.userType
+                userType:"simple user"
             })
             user.save()
             .then(result=>{
